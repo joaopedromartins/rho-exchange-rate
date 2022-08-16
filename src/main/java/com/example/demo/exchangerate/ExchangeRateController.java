@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "api/v1")
+@RequestMapping(path = "api/v1/exchangerate")
 public class ExchangeRateController {
     private final ExchangeRateService exchangeRateService;
 
@@ -17,8 +17,8 @@ public class ExchangeRateController {
 
 
     @GetMapping
-    public String getHello() {
-        return exchangeRateService.getHello();
+    public String getExchangeRate() {
+        return exchangeRateService.getExchangeRate();
     }
 
 }
