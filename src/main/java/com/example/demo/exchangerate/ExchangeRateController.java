@@ -17,8 +17,8 @@ public class ExchangeRateController {
 
 
     @GetMapping
-    public String getExchangeRate() {
-        return exchangeRateService.getExchangeRate();
+    public String getExchangeRate(String from, String to) {
+        return exchangeRateService.getExchangeRate(from, to);
     }
 
 }
