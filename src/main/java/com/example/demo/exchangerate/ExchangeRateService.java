@@ -13,6 +13,7 @@ public class ExchangeRateService {
     @Autowired
     private RestTemplate restTemplate;
 
+
     /**
      * Get Exchange rate from Currency A to Currency B
      * RESTful consumer from REST API https://api.exchangerate.host/convert
@@ -41,9 +42,10 @@ public class ExchangeRateService {
         return result;
     }
 
+
     /**
      * Get All Exchange rates from Currency A
-     * RESTful consumer from REST API https://api.exchangerate.host/convert
+     * RESTful consumer from REST API https://api.exchangerate.host/latest
      * See API documentation at https://exchangerate.host/#/#docs
      *
      * @param base Currency A
@@ -67,5 +69,35 @@ public class ExchangeRateService {
         String rates = jsonRates.toString();
 
         return rates;
+    }
+
+
+    /**
+     * Get All Exchange rates from Currency A
+     * RESTful consumer from REST API https://api.exchangerate.host/convert
+     * See API documentation at https://exchangerate.host/#/#docs
+     *
+     * @param from Currency A
+     * @param to Currency B
+     * @param amount value to convert from currency A
+     * @return value conversion
+     */
+    public String getValueConversion(String from, String to, String amount) {
+
+        // request url
+        String url_str = "https://api.exchangerate.host/convert?from={currencyA}&to={currencyB}&amount={amount}";
+
+        // create an instance of RestTemplate
+        RestTemplate restTemplate = new RestTemplate();
+
+        // send GET request using getForObject
+        String response = restTemplate.getForObject(url_str, String.class, from, to, amount);
+
+        // using Gson JsonParser to get result
+        JsonElement root = JsonParser.parseString(response);
+        JsonObject jsonObject = root.getAsJsonObject();
+        String result = jsonObject.get("result").getAsString();
+
+        return result;
     }
 }
