@@ -13,6 +13,15 @@ public class ExchangeRateService {
     @Autowired
     private RestTemplate restTemplate;
 
+    /**
+     * Get Exchange rate from Currency A to Currency B
+     * RESTful consumer from REST API https://api.exchangerate.host/convert
+     * see API documentation at https://exchangerate.host/#/#docs
+     *
+     * @param from Currency A
+     * @param to Currency B
+     * @return exchange rate
+     */
     public String getExchangeRate(String from, String to) {
 
         // request url
@@ -30,5 +39,33 @@ public class ExchangeRateService {
         String result = jsonObject.get("result").getAsString();
 
         return result;
+    }
+
+    /**
+     * Get All Exchange rates from Currency A
+     * RESTful consumer from REST API https://api.exchangerate.host/convert
+     * See API documentation at https://exchangerate.host/#/#docs
+     *
+     * @param base Currency A
+     * @return exchange rates list
+     */
+    public String getAllExchangeRates(String base) {
+
+        // request url
+        String url_str = "https://api.exchangerate.host/latest?base={currencyA}";
+
+        // create an instance of RestTemplate
+        RestTemplate restTemplate = new RestTemplate();
+
+        // send GET request using getForObject
+        String response = restTemplate.getForObject(url_str, String.class, base);
+
+        // using Gson JsonParser to get rates list
+        JsonElement root = JsonParser.parseString(response);
+        JsonObject jsonObject = root.getAsJsonObject();
+        JsonObject jsonRates = jsonObject.getAsJsonObject("rates");
+        String rates = jsonRates.toString();
+
+        return rates;
     }
 }
