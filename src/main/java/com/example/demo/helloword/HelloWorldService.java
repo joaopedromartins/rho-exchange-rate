@@ -1,4 +1,4 @@
-package com.example.demo.exchangerate;
+package com.example.demo.helloworld;
 
 import org.springframework.stereotype.Service;
 
