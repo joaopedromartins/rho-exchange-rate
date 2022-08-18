@@ -2,7 +2,7 @@
 RHO Exchange Rate Challenge
 
 
-## Delpoy
+## Deploy
 Download project archive at 
 https://github.com/joaopedromartins/rho-exchange-rate/archive/refs/heads/main.zip
 and unzip it to a folder in your computer.
