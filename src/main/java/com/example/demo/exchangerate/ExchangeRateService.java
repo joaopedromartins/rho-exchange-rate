@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
+
 @Service
 public class ExchangeRateService {
 
@@ -23,7 +25,7 @@ public class ExchangeRateService {
      * @param to Currency B
      * @return exchange rate
      */
-    public String getExchangeRate(String from, String to) {
+    public BigDecimal getExchangeRate(String from, String to) {
 
         // request url
         String url_str = "https://api.exchangerate.host/convert?from={currencyA}&to={currencyB}";
@@ -39,7 +41,7 @@ public class ExchangeRateService {
         JsonObject jsonObject = root.getAsJsonObject();
         String result = jsonObject.get("result").getAsString();
 
-        return result;
+        return new BigDecimal(result);
     }
 
 
@@ -82,7 +84,7 @@ public class ExchangeRateService {
      * @param amount value to convert from currency A
      * @return value conversion
      */
-    public String getValueConversion(String from, String to, String amount) {
+    public BigDecimal getValueConversion(String from, String to, String amount) {
 
         // request url
         String url_str = "https://api.exchangerate.host/convert?from={currencyA}&to={currencyB}&amount={amount}";
@@ -98,7 +100,7 @@ public class ExchangeRateService {
         JsonObject jsonObject = root.getAsJsonObject();
         String result = jsonObject.get("result").getAsString();
 
-        return result;
+        return new BigDecimal(result);
     }
 
     /**

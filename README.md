@@ -11,7 +11,9 @@ Open file DemoAplication.java , right-click and select "run DemoApplication main
 
 
 ## API Operations Examples
-In your browser you can test the following examples
+Open in your browser http://localhost:8080/swagger-ui.html to see documentation and a testing interface
+
+You can also test the following examples directly in your browser
 
 ### Hello World
 http://localhost:8080/api/v1/hello-world
