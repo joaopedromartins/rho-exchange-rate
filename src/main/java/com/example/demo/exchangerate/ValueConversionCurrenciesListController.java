@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequestMapping(path = "api/v1/valueconversionlist")
 public class ValueConversionCurrenciesListController {
@@ -17,8 +19,8 @@ public class ValueConversionCurrenciesListController {
 
 
     @GetMapping
-    public String getValueConversionCurrenciesList(String base, String[] to, double amount) {
-        return exchangeRateService.getValueConversionCurrenciesList(base, to, String.valueOf(amount));
+    public String getValueConversionCurrenciesList(String base, String[] to, BigDecimal amount) {
+        return exchangeRateService.getValueConversionCurrenciesList(base, to, amount.toString());
     }
 
 }

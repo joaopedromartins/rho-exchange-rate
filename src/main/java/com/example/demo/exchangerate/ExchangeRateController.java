@@ -16,6 +16,13 @@ public class ExchangeRateController {
     }
 
 
+    /**
+     * Get exchange rate from Currency A to Currency B
+     *
+     * @param from Currency A
+     * @param to Currency B
+     * @return exchange rate
+     */
     @GetMapping
     public String getExchangeRate(String from, String to) {
         return exchangeRateService.getExchangeRate(from, to);
