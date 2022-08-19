@@ -25,7 +25,7 @@ public class ExchangeRateService {
      * @param to Currency B
      * @return exchange rate
      */
-    public BigDecimal getExchangeRate(String from, String to) {
+    public BigDecimal getExchangeRate(EnumCurrency from, EnumCurrency to) {
 
         // request url
         String url_str = "https://api.exchangerate.host/convert?from={currencyA}&to={currencyB}";
@@ -53,7 +53,7 @@ public class ExchangeRateService {
      * @param base Currency A
      * @return exchange rates list
      */
-    public String getAllExchangeRates(String base) {
+    public String getAllExchangeRates(EnumCurrency base) {
 
         // request url
         String url_str = "https://api.exchangerate.host/latest?base={currencyA}";
@@ -84,7 +84,7 @@ public class ExchangeRateService {
      * @param amount value to convert from currency A
      * @return value conversion
      */
-    public BigDecimal getValueConversion(String from, String to, String amount) {
+    public BigDecimal getValueConversion(EnumCurrency from, EnumCurrency to, BigDecimal amount) {
 
         // request url
         String url_str = "https://api.exchangerate.host/convert?from={currencyA}&to={currencyB}&amount={amount}";
@@ -93,7 +93,7 @@ public class ExchangeRateService {
         RestTemplate restTemplate = new RestTemplate();
 
         // send GET request using getForObject
-        String response = restTemplate.getForObject(url_str, String.class, from, to, amount);
+        String response = restTemplate.getForObject(url_str, String.class, from, to, amount.toString());
 
         // using Gson JsonParser to get result
         JsonElement root = JsonParser.parseString(response);
@@ -113,7 +113,7 @@ public class ExchangeRateService {
      * @param amount value to convert from currency A
      * @return value conversion list to supplied currencies
      */
-    public String getValueConversionCurrenciesList(String from, String[] to, String amount) {
+    public String getValueConversionCurrenciesList(EnumCurrency from, EnumCurrency[] to, BigDecimal amount) {
 
 
         // request url
@@ -123,7 +123,7 @@ public class ExchangeRateService {
         RestTemplate restTemplate = new RestTemplate();
 
         // send GET request using getForObject
-        String response = restTemplate.getForObject(url_str, String.class, from, amount);
+        String response = restTemplate.getForObject(url_str, String.class, from, amount.toString());
 
         // using Gson JsonParser to get rates list
         JsonElement root = JsonParser.parseString(response);
@@ -133,8 +133,8 @@ public class ExchangeRateService {
         // filter rates/values to list of supplied currencies
         StringBuilder result = new StringBuilder("{");
         boolean first = true;
-        for (String currency: to) {
-            String value = jsonRates.get(currency).getAsString();
+        for (EnumCurrency currency: to) {
+            String value = jsonRates.get(currency.toString()).getAsString();
             if (value != null  &&  !value.isEmpty()) {
                 if(first) {
                     first = false;

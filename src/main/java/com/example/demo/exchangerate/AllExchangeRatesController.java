@@ -20,13 +20,13 @@ public class AllExchangeRatesController {
     /**
      * Controller to get all exchange rates from Currency A
      *
-     * @param base Currency A
+     * @param currency Currency A
      * @return list of all exchange rates
      */
     @ApiOperation("Get all exchange rates from Currency A")
     @GetMapping
-    public String getAllExchangeRates(String base) {
-        return exchangeRateService.getAllExchangeRates(base);
+    public String getAllExchangeRates(EnumCurrency currency) {
+        return exchangeRateService.getAllExchangeRates(currency);
     }
 
 }

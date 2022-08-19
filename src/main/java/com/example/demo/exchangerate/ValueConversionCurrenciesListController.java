@@ -22,15 +22,15 @@ public class ValueConversionCurrenciesListController {
     /**
      * Controller to get value conversion from Currency A to a list of supplied currencies
      *
-     * @param base Currency A
+     * @param from Currency A
      * @param to list of supplied currencies
      * @param amount of Currency A
      * @return value conversion list
      */
     @ApiOperation("Get value conversion from Currency A to a list of supplied currencies")
     @GetMapping
-    public String getValueConversionCurrenciesList(String base, String[] to, BigDecimal amount) {
-        return exchangeRateService.getValueConversionCurrenciesList(base, to, amount.toString());
+    public String getValueConversionCurrenciesList(EnumCurrency from, EnumCurrency[] to, BigDecimal amount) {
+        return exchangeRateService.getValueConversionCurrenciesList(from, to, amount);
     }
 
 }

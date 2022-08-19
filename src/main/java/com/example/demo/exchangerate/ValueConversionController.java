@@ -29,8 +29,8 @@ public class ValueConversionController {
      */
     @ApiOperation("Get value conversion from Currency A to Currency B")
     @GetMapping
-    public BigDecimal getValueConversion(String from, String to, BigDecimal amount) {
-        return exchangeRateService.getValueConversion(from, to, amount.toString());
+    public BigDecimal getValueConversion(EnumCurrency from, EnumCurrency to, BigDecimal amount) {
+        return exchangeRateService.getValueConversion(from, to, amount);
     }
 
 }

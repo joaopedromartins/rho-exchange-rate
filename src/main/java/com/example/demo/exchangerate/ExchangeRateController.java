@@ -29,7 +29,7 @@ public class ExchangeRateController {
      */
     @ApiOperation("Get exchange rate from Currency A to Currency B")
     @GetMapping
-    public BigDecimal getExchangeRate(String from, String to) {
+    public BigDecimal getExchangeRate(EnumCurrency from, EnumCurrency to) {
         return exchangeRateService.getExchangeRate(from, to);
     }
 
