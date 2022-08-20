@@ -1,6 +1,5 @@
 package com.example.demo.exchangerate;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,13 +19,13 @@ public class AllExchangeRatesController {
     /**
      * Controller to get all exchange rates from Currency A
      *
-     * @param currency Currency A
+     * @param from Currency A
      * @return list of all exchange rates
      */
     @ApiOperation("Get all exchange rates from Currency A")
     @GetMapping
-    public String getAllExchangeRates(EnumCurrency currency) {
-        return exchangeRateService.getAllExchangeRates(currency);
+    public String getAllExchangeRates(EnumCurrency from) {
+        return exchangeRateService.getAllExchangeRates(from.toString());
     }
 
 }

@@ -50,10 +50,10 @@ public class ExchangeRateService {
      * RESTful consumer from REST API https://api.exchangerate.host/latest
      * See API documentation at https://exchangerate.host/#/#docs
      *
-     * @param base Currency A
+     * @param from Currency A
      * @return exchange rates list
      */
-    public String getAllExchangeRates(EnumCurrency base) {
+    public String getAllExchangeRates(String from) {
 
         // request url
         String url_str = "https://api.exchangerate.host/latest?base={currencyA}";
@@ -62,7 +62,7 @@ public class ExchangeRateService {
         RestTemplate restTemplate = new RestTemplate();
 
         // send GET request using getForObject
-        String response = restTemplate.getForObject(url_str, String.class, base);
+        String response = restTemplate.getForObject(url_str, String.class, from);
 
         // using Gson JsonParser to get rates list
         JsonElement root = JsonParser.parseString(response);
