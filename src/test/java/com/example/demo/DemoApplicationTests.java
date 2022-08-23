@@ -72,6 +72,99 @@ class DemoApplicationTests {
 				.andExpect(jsonPath("$.GBP").isNumber());
 	}
 
+
+	@Test
+	void getDelayedExchangeRateFromCurrencyAtoCurrencyBshouldReturnNumber() throws Exception {
+		this.mockMvc.perform(get("/api/v1/delayed/exchangerate")
+						.param("server", "ExchangeRateHost")
+						.param("from", "EUR")
+						.param("to","USD"))
+				.andDo(print()).andExpect(status().isOk())
+				.andExpect(jsonPath("$").isNumber());
+	}
+
+
+	@Test
+	void getDelayedCustomExchangeRateFromCurrencyAtoCurrencyBshouldReturnNumber() throws Exception {
+		this.mockMvc.perform(get("/api/v1/delayed/exchangerate")
+						.param("server", "Custom")
+						.param("from", "EUR")
+						.param("to","USD"))
+				.andDo(print()).andExpect(status().isOk())
+				.andExpect(jsonPath("$").isNumber());
+	}
+
+	@Test
+	void getDelayedAllExchangeRatesFromCurrencyAshouldReturnArray() throws Exception {
+		this.mockMvc.perform(get("/api/v1/delayed/allexchangerates")
+						.param("server", "ExchangeRateHost")
+						.param("from", "EUR"))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.USD").isNumber())
+				.andExpect(jsonPath("$.GBP").isNumber());
+	}
+
+	@Test
+	void getDelayedCustomAllExchangeRatesFromCurrencyAshouldReturnArray() throws Exception {
+		this.mockMvc.perform(get("/api/v1/delayed/allexchangerates")
+						.param("server", "Custom")
+						.param("from", "EUR"))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.USD").isNumber())
+				.andExpect(jsonPath("$.GBP").isNumber());
+	}
+
+	@Test
+	void getDelayedValueConversionFromCurrencyAtoCurrencyBshouldReturnNumber() throws Exception {
+		this.mockMvc.perform(get("/api/v1/delayed/exchangerate")
+						.param("server", "ExchangeRateHost")
+						.param("from", "EUR")
+						.param("to","USD")
+						.param("amount", String.valueOf(10.00)))
+				.andDo(print()).andExpect(status().isOk())
+				.andExpect(jsonPath("$").isNumber());
+	}
+
+	@Test
+	void getDelayedCustomValueConversionFromCurrencyAtoCurrencyBshouldReturnNumber() throws Exception {
+		this.mockMvc.perform(get("/api/v1/delayed/exchangerate")
+						.param("server", "Custom")
+						.param("from", "EUR")
+						.param("to","USD")
+						.param("amount", String.valueOf(10.00)))
+				.andDo(print()).andExpect(status().isOk())
+				.andExpect(jsonPath("$").isNumber());
+	}
+
+	@Test
+	void getDelayedValueConversionFromCurrencyAtoCurrencyListshouldReturnArray() throws Exception {
+		this.mockMvc.perform(get("/api/v1/delayed/valueconversionlist")
+						.param("server", "ExchangeRateHost")
+						.param("from", "EUR")
+						.param("to","USD,GBP")
+						.param("amount", String.valueOf(10.00)))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.USD").isNumber())
+				.andExpect(jsonPath("$.GBP").isNumber());
+	}
+
+	@Test
+	void getDelayedCustomValueConversionFromCurrencyAtoCurrencyListshouldReturnArray() throws Exception {
+		this.mockMvc.perform(get("/api/v1/delayed/valueconversionlist")
+						.param("server", "Custom")
+						.param("from", "EUR")
+						.param("to","USD,GBP")
+						.param("amount", String.valueOf(10.00)))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.USD").isNumber())
+				.andExpect(jsonPath("$.GBP").isNumber());
+	}
+
+
 	@Test
 	void verifyAllCurrenciesFromEnumCurrencyExists() throws Exception {
 		this.mockMvc.perform(get("/api/v1/allexchangerates")

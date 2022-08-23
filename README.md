@@ -13,10 +13,13 @@ and unzip it to a folder in your computer.
 ### starting with IntelliJ IDEA
 Open project with an IDE such as IteliJ IDEA.
 Open file DemoAplication.java , right-click and select "run DemoApplication main()"
-
+### Build with Maven and run it JavaVM
+In the command line terminal, 
+mvn clean package
+java -jar target\demo-0.0.1-SNAPSHOT.jar
 
 ## API Operations Examples
-Open in your browser http://localhost:8080/swagger-ui.html to see documentation and a testing interface
+Open in your browser http://localhost:8080/swagger-ui.html to see documentation and testing interface
 ![Screenshot](swagger.png)
 
 You can also test the following examples directly in your browser
