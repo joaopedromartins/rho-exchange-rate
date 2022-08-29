@@ -4,10 +4,9 @@ import com.example.demo.config.CacheConfig;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 import springfox.documentation.annotations.Cacheable;
 
 import java.math.BigDecimal;
@@ -15,11 +14,10 @@ import java.math.BigDecimal;
 @Service
 public class DelayedExchangeRateService {
 
-    @Autowired
-    private RestTemplate restTemplate;
-
     @Value("${ratedatasource.url}")
     private String customUrl_str;
+    @Value("${ratedatasource.uripath}")
+    private String customUriPath_str;
     @Value("${ratedatasource.ratesjsonpath}")
     private String ratesJsonPath_str;
 
@@ -143,19 +141,25 @@ public class DelayedExchangeRateService {
      * RESTful consumer from REST API customized on
      * application.properties
      *
-     * @param from Currency A
+     * @param currency from Currency A
      * @return exchange rates list
      */@Cacheable(CacheConfig.CACHE_ONE_MINUTE)
     public String getAllRatesFromCustomHost(String currency) {
 
-        // request url
-        String url_str = customUrl_str + currency;
+        // request path for WebClient UriBuilder
+        String uri_str = customUriPath_str + "{currencyA}";
 
-        // create an instance of RestTemplate
-        RestTemplate restTemplate = new RestTemplate();
+        // create an instance of WebClient
+        WebClient webClient = WebClient.create(customUrl_str);
 
-        // send GET request using getForObject
-        String response = restTemplate.getForObject(url_str, String.class);
+        // send GET request
+        String response = webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path(uri_str)
+                        .build(currency))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
 
         // using Gson JsonParser to get rates list
         JsonElement root = JsonParser.parseString(response);
@@ -178,14 +182,21 @@ public class DelayedExchangeRateService {
     @Cacheable(CacheConfig.CACHE_ONE_MINUTE)
     public String getAllRatesFromExchangeRateHost(String from) {
 
-        // request url
-        String url_str = "https://api.exchangerate.host/latest?base={currencyA}";
+        // request url https://api.exchangerate.host/latest?base={currencyA}
+        String url_str = "https://api.exchangerate.host";
+        String uri_str = "/latest?base={currencyA}";
 
-        // create an instance of RestTemplate
-        RestTemplate restTemplate = new RestTemplate();
+        // create an instance of WebClient
+        WebClient webClient = WebClient.create(url_str);
 
-        // send GET request using getForObject
-        String response = restTemplate.getForObject(url_str, String.class, from);
+        // send GET request
+        String response = webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                                .path(uri_str)
+                                .build(from))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
 
         // using Gson JsonParser to get rates list
         JsonElement root = JsonParser.parseString(response);

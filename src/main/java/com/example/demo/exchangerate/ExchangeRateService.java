@@ -3,17 +3,13 @@ package com.example.demo.exchangerate;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.math.BigDecimal;
 
 @Service
 public class ExchangeRateService {
-
-    @Autowired
-    private RestTemplate restTemplate;
 
 
     /**
@@ -27,14 +23,23 @@ public class ExchangeRateService {
      */
     public BigDecimal getExchangeRate(EnumCurrency from, EnumCurrency to) {
 
-        // request url
-        String url_str = "https://api.exchangerate.host/convert?from={currencyA}&to={currencyB}";
+        // request url https://api.exchangerate.host/convert?from={currencyA}&to={currencyB}
+        String url_str = "https://api.exchangerate.host";
+        String uri_str = "/convert";
 
-        // create an instance of RestTemplate
-        RestTemplate restTemplate = new RestTemplate();
+        // create an instance of WebClient
+        WebClient webClient = WebClient.create(url_str);
 
-        // send GET request using getForObject
-        String response = restTemplate.getForObject(url_str, String.class, from, to);
+        // send GET request on WebClient
+        String response = webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path(uri_str)
+                        .queryParam("from", from.getCurrency())
+                        .queryParam("to", to.getCurrency())
+                        .build())
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
 
         // using Gson JsonParser to get result
         JsonElement root = JsonParser.parseString(response);
@@ -55,14 +60,22 @@ public class ExchangeRateService {
      */
     public String getAllExchangeRates(String from) {
 
-        // request url
-        String url_str = "https://api.exchangerate.host/latest?base={currencyA}";
+        // request url https://api.exchangerate.host/latest?base={currencyA}
+        String url_str = "https://api.exchangerate.host";
+        String uri_str = "/latest";
 
-        // create an instance of RestTemplate
-        RestTemplate restTemplate = new RestTemplate();
+        // create an instance of WebClient
+        WebClient webClient = WebClient.create(url_str);
 
-        // send GET request using getForObject
-        String response = restTemplate.getForObject(url_str, String.class, from);
+        // send GET request on WebClient
+        String response = webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path(uri_str)
+                        .queryParam("base", from)
+                        .build())
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
 
         // using Gson JsonParser to get rates list
         JsonElement root = JsonParser.parseString(response);
@@ -86,14 +99,24 @@ public class ExchangeRateService {
      */
     public BigDecimal getValueConversion(EnumCurrency from, EnumCurrency to, BigDecimal amount) {
 
-        // request url
-        String url_str = "https://api.exchangerate.host/convert?from={currencyA}&to={currencyB}&amount={amount}";
+        // request url https://api.exchangerate.host/convert?from={currencyA}&to={currencyB}&amount={amount}
+        String url_str = "https://api.exchangerate.host";
+        String uriPath_str = "/convert";
 
-        // create an instance of RestTemplate
-        RestTemplate restTemplate = new RestTemplate();
+        // create an instance of WebClient
+        WebClient webClient = WebClient.create(url_str);
 
-        // send GET request using getForObject
-        String response = restTemplate.getForObject(url_str, String.class, from, to, amount.toString());
+        // send GET request on WebClient
+        String response = webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path(uriPath_str)
+                        .queryParam("from", from.getCurrency())
+                        .queryParam("to", to.getCurrency())
+                        .queryParam("amount", amount.toString())
+                        .build())
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
 
         // using Gson JsonParser to get result
         JsonElement root = JsonParser.parseString(response);
@@ -115,15 +138,23 @@ public class ExchangeRateService {
      */
     public String getValueConversionCurrenciesList(EnumCurrency from, EnumCurrency[] to, BigDecimal amount) {
 
+        // request url https://api.exchangerate.host/latest?base={currencyA}&amount={amount}
+        String url_str = "https://api.exchangerate.host";
+        String uriPath_str = "/latest";
 
-        // request url
-        String url_str = "https://api.exchangerate.host/latest?base={currencyA}&amount={amount}";
+        // create an instance of WebClient
+        WebClient webClient = WebClient.create(url_str);
 
-        // create an instance of RestTemplate
-        RestTemplate restTemplate = new RestTemplate();
-
-        // send GET request using getForObject
-        String response = restTemplate.getForObject(url_str, String.class, from, amount.toString());
+        // send GET request on WebClient
+        String response = webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path(uriPath_str)
+                        .queryParam("base", from.getCurrency())
+                        .queryParam("amount", amount.toString())
+                        .build())
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
 
         // using Gson JsonParser to get rates list
         JsonElement root = JsonParser.parseString(response);
