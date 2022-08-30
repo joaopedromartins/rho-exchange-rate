@@ -17,6 +17,10 @@ Open file DemoAplication.java , right-click and select "run DemoApplication main
 In the command line terminal, 
 mvn clean package
 java -jar target\demo-0.0.1-SNAPSHOT.jar
+### Build and Run with Docker
+In the command line terminal, go to unziped folder
+docker image build -t rho-exchangerate-challenge .
+docker container run -p 8080:8080 -d -t rho-exchangerate-challenge bash
 
 ## API Operations Examples
 Open in your browser http://localhost:8080/swagger-ui.html to see documentation and testing interface
